@@ -16,10 +16,11 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include "uci.h"
+#ifndef STILTON_UCI_H
+#define STILTON_UCI_H
 
-int main(void)
-{
-	struct uci uci;
-	uci_loop(&uci);
-}
+struct uci {};
+
+void uci_loop(struct uci *uci);
+
+#endif //STILTON_UCI_H

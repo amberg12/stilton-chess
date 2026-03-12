@@ -16,10 +16,33 @@
   along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <stdio.h>
+
+#include "string.h"
 #include "uci.h"
 
-int main(void)
+void uci_loop(struct uci *uci)
 {
-	struct uci uci;
-	uci_loop(&uci);
+	bool quit = false;
+
+	while (!quit) {
+		struct string user_input, command, args;
+		string_init(&user_input);
+		string_init(&command);
+		string_init(&args);
+		
+		string_read_line(&user_input, stdin);
+
+		string_split(&user_input, &command, &args, ' ');
+
+		if (string_cmp_cstr(&command, "quit")) {
+			quit = true;
+			goto end_loop;
+		}
+		
+end_loop:
+		string_destroy(&user_input);
+		string_destroy(&command);
+		string_destroy(&args);
+	}
 }
