@@ -1,25 +1,28 @@
 CC := gcc
-CFLAGS := -Wall -Wextra -O2 -std=c99 -Wpedantic
+CFLAGS := -Wall -Wextra -O2 -std=c99 -Wpedantic -MMD -MP
 
 SRCS := $(wildcard src/*.c)
+HDRS := $(wildcard src/*.h)
 OBJS := $(patsubst src/%.c,build/%.o,$(SRCS))
+DEPS := $(OBJS:.o=.d)
 EXE_NAME := build/stilton
 
-# Default target
 all: $(EXE_NAME)
 
-# Link the executable from object files
 $(EXE_NAME): $(OBJS)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -o $@ $^
 
-# Compile .c files into build/ directory
 build/%.o: src/%.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-# Clean everything in build/
+format:
+	clang-format -i $(SRCS) $(HDRS)
+
 clean:
 	rm -rf build
 
-.PHONY: all clean
+-include $(DEPS)
+
+.PHONY: all clean format
