@@ -37,9 +37,12 @@ void uci_loop(struct uci *uci)
 
 		if (string_cmp_cstr(&command, "quit")) {
 			quit = true;
+			goto end_loop;
 		}
 		
 end_loop:
 		string_destroy(&user_input);
+		string_destroy(&command);
+		string_destroy(&args);
 	}
 }
